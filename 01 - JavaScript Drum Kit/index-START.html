@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS Drum Kit</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 
@@ -57,10 +59,43 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
-<script>
+  <script>
+    //create function playSound to play the key
+    function playSound(e) {
+      //  console.log(e, e.keyCode)
+      //looking for an element using querySelector 
+      //look for attribute slector
+      const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+      const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+      //  console.log(audio)
+      if (!audio) return // stop the function to run
+      //currentTime property sets or returns current position (in sec) of video/audio playback
+      audio.currentTime = 0 // rewind to the start
+      //call audio with .play()
+      audio.play()
+      // console.log(key)
+      //add playing class in the key class
+      //same as key.addClass('playing) in JQuery
+      key.classList.add('playing');
+    };
 
-</script>
+    function removeTransition(e) {
+      // console.log(e)
+      if (e.propertyName !== "transform") return; //skip it if it's not a transform
+      // console.log(e.propertyName)
+      this.classList.remove('playing')
+    }
+
+    //select all key class and put in variable keys which is an array
+    const keys = document.querySelectorAll('.key');
+    //loop through the keys array and add event listerner transitioned and excute removeTranstion for each element
+    keys.forEach(key => key.addEventListener("transitionend", removeTransition))
+
+    //create even lister with keydown
+    window.addEventListener('keydown', playSound)
+  </script>
 
 
 </body>
+
 </html>
